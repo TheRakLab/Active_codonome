@@ -617,10 +617,17 @@ function rebuildExprData(){
 const SPECIES_FILES={human:'human_codoncount_uniqueGene.csv',mouse:'mouse_NM_symbol_codoncount.csv',bovine:'BosTauCodonCount.csv'};
 
 // ── Auto-fetch codon tables from repo ──
+// Works for:
+//   - GitHub Pages:  https://user.github.io/repo/  → https://user.github.io/repo/data/
+//   - Local server:  http://localhost:8080/         → http://localhost:8080/data/
+//   - Subdirectory:  https://example.com/tool/     → https://example.com/tool/data/
 const REPO_DATA_URL=(()=>{
-  const s=window.location.href;
-  if(s.includes('github.io')){const base=s.split('/').slice(0,-1).join('/');return base+'/data/';}
-  return 'data/';
+  // Get the directory containing this HTML file
+  const href=window.location.href;
+  // Remove query string and hash, then remove the filename (anything after last /)
+  const clean=href.split('?')[0].split('#')[0];
+  const base=clean.endsWith('/')?clean:clean.substring(0,clean.lastIndexOf('/')+1);
+  return base+'data/';
 })();
 const SPECIES_DATA_FILES={human:'human_codoncount.csv',mouse:'mouse_codoncount.csv',bovine:'bovine_codoncount.csv'};
 
