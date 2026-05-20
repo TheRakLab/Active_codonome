@@ -11,7 +11,7 @@ A browser-based tool for expression-weighted codon usage analysis. Upload an mRN
 ### Option A — GitHub Pages (recommended)
 1. Fork this repository
 2. Go to **Settings → Pages → Source → Deploy from branch: `main`, folder: `/ (root)`**
-3. Open `https://TheRakLab.github.io/codonome-analyzer/`
+3. Open 'https://theraklab.github.io/Active_codonome/'
 4. Done — codon tables load automatically when you select a species
 
 ### Option B — Local use
