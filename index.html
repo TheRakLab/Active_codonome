@@ -616,11 +616,6 @@ function rebuildExprData(){
 ═══════════════════════════════════════════════ */
 const SPECIES_FILES={human:'human_codoncount_uniqueGene.csv',mouse:'mouse_NM_symbol_codoncount.csv',bovine:'BosTauCodonCount.csv'};
 
-/* ── GitHub Pages: path to codon data files relative to index.html ──
-   Place the three CSV files in a  data/  subfolder of your repo root.
-   If you rename/move the repo, only this constant needs updating.      */
-const DATA_PATH='data/';
-
 function selectSpecies(sp){
   selectedSpecies=sp;
   ['human','mouse','bovine'].forEach(s=>document.getElementById('sp-'+s).classList.toggle('selected',s===sp));
@@ -631,37 +626,13 @@ function selectSpecies(sp){
   const area=document.getElementById('codon-upload-area');
   area.style.display='block';
   area.innerHTML=`<div class="alert alert-info" style="flex-direction:column;align-items:flex-start;gap:9px">
-    <div>Load codon reference for <strong>${sp}</strong>:</div>
-    <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
-      <button class="btn btn-primary" style="width:auto;padding:5px 14px;font-size:12px" onclick="fetchCodonFile('${sp}')">⬇ Load from repo</button>
-      <span style="font-size:11px;color:var(--muted)">or</span>
+    <div>Upload codon reference for <strong>${sp}</strong>:<br><code style="font-family:var(--mono);font-size:11px">${SPECIES_FILES[sp]}</code></div>
+    <div style="display:flex;align-items:center;gap:9px">
       <label for="codon-file-input" class="btn btn-secondary" style="width:auto;padding:5px 12px;font-size:12px;cursor:pointer">📂 Upload CSV</label>
       <input type="file" id="codon-file-input" accept=".csv" style="display:none" onchange="loadCodonFile(this.files[0])">
-    </div>
-    <div style="font-size:11px;color:var(--muted)">Expected file: <code style="font-family:var(--mono)">${DATA_PATH}${SPECIES_FILES[sp]}</code></div>
-    <span style="font-size:12px;color:var(--muted)" id="codon-file-status"></span>
-  </div>`;
+      <span style="font-size:12px;color:var(--muted)" id="codon-file-status">No file chosen</span>
+    </div></div>`;
   checkReady();
-}
-
-/* Fetch codon CSV directly from the repo's data/ folder */
-async function fetchCodonFile(sp){
-  const url=DATA_PATH+SPECIES_FILES[sp];
-  const el=document.getElementById('codon-file-status');
-  if(el)el.textContent='Fetching…';
-  try{
-    const resp=await fetch(url);
-    if(!resp.ok)throw new Error(`HTTP ${resp.status} — make sure ${url} exists in your repo.`);
-    const text=await resp.text();
-    if(el)el.textContent='Parsing…';
-    Papa.parse(text,{header:true,skipEmptyLines:true,
-      complete(res){codonRawRows=res.data;codonRawFields=res.meta.fields;buildCodonGeneColPicker(codonRawFields);},
-      error(e){if(el)el.textContent='Parse error: '+e.message;}
-    });
-  }catch(err){
-    if(el)el.textContent='❌ '+err.message;
-    console.error(err);
-  }
 }
 
 function loadCodonFile(file){
