@@ -4,7 +4,7 @@ A browser-based tool for mRNA expression × codon usage analysis. No installatio
 
 ## Live Demo
 
-> If hosted via GitHub Pages: `https://<your-username>.github.io/<repo-name>/`
+> If hosted via GitHub Pages: `https://TheRakLab.github.io/<repo-name>/`
 
 ## Features
 
